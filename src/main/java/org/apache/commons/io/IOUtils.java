@@ -155,6 +155,8 @@ public class IOUtils {
      */
     private static final int SKIP_BUFFER_SIZE = 2048;
 
+	private static final long DEFULT_FLUSH_SIZE = 1024 * 1024;
+
     // Allocated in the relevant skip method if necessary.
     /*
      * These buffers are static and are shared between threads.
@@ -2189,6 +2191,9 @@ public class IOUtils {
         while (EOF != (n = input.read(buffer))) {
             output.write(buffer, 0, n);
             count += n;
+            if (count >= DEFULT_FLUSH_SIZE) {
+				output.flush();
+			}
         }
         return count;
     }
